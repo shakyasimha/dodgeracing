@@ -233,9 +233,9 @@ def help_screen():
 def game_loop():
     player = Player()
     playerX_dx, playerY_dy = 0, 0
-    x, y = 0, 0
     running = True
     obstacle_speed = 10
+    level_speed = obstacle_speed
     obs = 0
     obs_x = random.randrange(130, 620)
     obs_y = -750
@@ -264,8 +264,8 @@ def game_loop():
                 if event.key == pygame.K_s:
                     obstacle_speed += 2
                 if event.key == pygame.K_d:
-                    if obstacle_speed < 10:
-                        obstacle_speed = 10
+                    if obstacle_speed < level_speed:
+                        obstacle_speed = level_speed
                     else:
                         obstacle_speed -= 2
 
@@ -301,9 +301,10 @@ def game_loop():
             car_passed += 1
             score = car_passed * 319 / 304
 
-            if int(car_passed) % 20 == 0:
+            if score % 100 == 0:
                 level += 1
-                obstacle_speed += 2
+                obstacle_speed += 5
+                level_speed += 5
 
         if player.y < obs_y + enemy_height:
             if player.x > obs_x and player.x < obs_x + enemy_width \
@@ -314,7 +315,6 @@ def game_loop():
                 # Left side:
                 # if player.x < obs_x + obs_width or player.x + player.width < obs_x + enemy_width
 
-                print(player.x, obs_x, enemy_width)
                 crash()
                 if click == (1, 0, 0):
                     intro_screen()
